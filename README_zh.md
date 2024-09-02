@@ -1,21 +1,21 @@
 # base-error
 
-Pipeline pattern design, an active/centralized error handling and chaining call encapsulation solution.
+流水线模式设计，一种主动/集中错误处理和链式调用封装方案。
 
-## Features
+## 特性
 
-- Active/Centralized Error Handling
-- Chaining Calls
+- 主动/集中错误处理
+- 链式调用
 
-## Applicable Scenarios
+## 适用场景
 
-Encapsulation of middleware with a large number of composite operations, facilitating centralized error handling for middleware callers, and using chaining calls to enhance code readability and development efficiency.
+有大量组合操作的中间件封装，方便中间件的调用者集中处理错误，以及使用链式调用，提升代码可读性和开发效率。
 
-## Comparison of Effects
+## 效果对比
 
-For a comparison example between the normal mode and the base-error mode, please refer to the examples in [examples](https://github.com/yuanboshe/base-error/tree/master/examples)。
+普通模式和base-error模式的对比示例，可以参考[examples](https://github.com/yuanboshe/base-error/tree/master/examples)中的例子。
 
-In the normal mode, callers generally make single-method calls with passive error handling.
+普通模式下，调用者一般是单方法调用，被动错误处理。
 
 ```go
 func main() {
@@ -49,7 +49,7 @@ func main() {
 }
 ```
 
-In the base-error mode, callers can actively/centrally handle errors, and can implement chaining calls to enhance readability and improve development efficiency.
+base-error模式下，调用者可以主动/集中处理错误，可以实现链式调用，增强可读性和提升开发效率。
 
 ```go
 func main() {
@@ -65,13 +65,13 @@ func main() {
 }
 ```
 
-## Usage Specifications
+## 使用规范
 
-Reference: [berr_example_test.go](https://github.com/yuanboshe/base-error/blob/master/berr/berr_example_test.go)
+参考：[berr_example_test.go](https://github.com/yuanboshe/base-error/blob/master/berr/berr_example_test.go)
 
-### Middleware Encapsulation
+### 中间件封装
 
-Import package: `import "github.com/yuanboshe/base-error/berr"`
+引包：`import "github.com/yuanboshe/base-error/berr"`
 
 ```go
 type Product struct {
@@ -122,12 +122,12 @@ func (p *Product) GetMessage() string {
 }
 ```
 
-Key Points:
-1. All middleware encapsulations inherit from `BaseErr[T]`, where `T` is the middleware struct type.
-2. All methods should start with `if p.Err() != nil { return p }` to check for errors and skip subsequent operations.
-3. All internal error handling should be imported into the `err` member variable for temporary storage using `p.SetErr()`.
+要点：
+1. 所有中间件封装都继承自`BaseErr[T]`，其中`T`为中间件struct类型。
+2. 所有方法都要以`if p.Err() != nil { return p }`开头，用于检查错误，跳过后面的操作。
+3. 所有内部错误处理，都以`p.SetErr()`导入到`err`成员变量暂存。
 
-### Middleware Invocation
+### 中间件调用
 
 ```go
 func ExampleBaseErr() {
@@ -158,12 +158,12 @@ func ExampleBaseErr() {
 }
 ```
 
-Key Points:
-1. All middleware objects need to be initialized with `InitAddr()` for object address initialization.
-2. Check for errors using `Err()`, and after handling the error, if you want to continue using the middleware object, clear the error with `SetErr(nil)`.
+要点：
+1. 所有中间件对象都需要`InitAddr()`进行对象地址初始化。
+2. 通过`Err()`检查错误，并对错误进行处理后，如果后续还要继续使用中间件对象，则需要`SetErr(nil)`清除错误。
 
-## Design Philosophy
+## 设计思想
 
-Everything starts from the convenience of the user (caller). By actively/centrally handling errors, it reduces the writing of error handling code, enhances readability, and improves development efficiency. Chaining calls further enhance code readability and development efficiency.
+一切从用户（调用者）使用便利的角度出发，通过用户主动/集中错误处理，减少错误处理代码的编写，提升可读性和开发效率；通过链式调用，进一步增强代码的可读性和开发效率。
 
-For more detailed active/centralized error handling design philosophy, please refer to [An Elegant Golang Error Design Pattern](https://blog.pz1.top/en/article/base-error-elegant-golang-error-design-pattern), and for the design philosophy of pipeline pattern and chaining calls, please refer to [Golang Pipeline Pattern and Chaining Calls](https://blog.pz1.top/en/article/base-error-pipeline-pattern-chaining-calls).
+更详细的主动/集中错误处理设计思想参考[一种优雅的Golang error设计模式](https://blog.pz1.top/article/base-error-elegant-golang-error-design-pattern)，流水线模式和链式调用设计思想参考[Golang流水线模式与链式调用](https://blog.pz1.top/article/base-error-pipeline-pattern-chaining-calls)。

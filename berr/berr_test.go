@@ -11,7 +11,7 @@ type MyTestErr struct {
 }
 
 func myPrint(prefix string, t any) {
-	fmt.Printf("%v: type %T add %p\n", prefix, t, t)
+	fmt.Printf("%v: type %T address %p\n", prefix, t, t)
 
 }
 func TestBase(t *testing.T) {
